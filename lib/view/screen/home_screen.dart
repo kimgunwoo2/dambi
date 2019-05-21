@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HomeScreen extends StatefulWidget{
   @override
@@ -11,7 +12,6 @@ class HomeScreenState extends State<HomeScreen>{
 
   int rideTimesInThisWeek = 7;
   int totalPoint = 1050;
-
   @override
   Widget build(BuildContext context) {
     return _builBody();
@@ -42,14 +42,13 @@ class HomeScreenState extends State<HomeScreen>{
             Padding(
               padding: EdgeInsets.only(left: 40.0, right: 40.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("TODAY", style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold) ,),
-                  Icon(Icons.directions_bus, size: 40.0,),
+                  Text("마일리지 현황", style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold) ,),
                 ],
               ),
             ),
-            Row(
+            Column(
               children: <Widget>[
                 new CircularPercentIndicator(
                   radius: 120.0,
@@ -61,8 +60,8 @@ class HomeScreenState extends State<HomeScreen>{
                     style:
                     new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
                   ),
-                  footer: new Text(
-                    "지금 내 포인트",
+                  header: new Text(
+                    "오늘 적립한 마일리지",
                     style:
                     new TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
                   ),
@@ -74,25 +73,74 @@ class HomeScreenState extends State<HomeScreen>{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Icon(Icons.directions_bus, size: 30.0,),
                         SizedBox(width: 10.0,),
-                        Text("일주일 동안 탄 횟수 ${rideTimesInThisWeek}회", style: TextStyle(fontSize: 20.0),),
+                        AutoSizeText("일주일 동안 탄 횟수 ${rideTimesInThisWeek}회", style: TextStyle(fontSize: 20.0),),
                       ],
                     ),
                     SizedBox(height: 10.0,),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Icon(Icons.monetization_on, size: 30.0,),
                         SizedBox(width: 10.0,),
-                        Text("총 마일리지 ${totalPoint}P", style: TextStyle(fontSize: 20.0),),
+                        Text("총 마일리지", style: TextStyle(fontSize: 20.0),),
+                        Text("${totalPoint}P", style: TextStyle(color:Colors.amber, fontSize: 20.0),),
                       ],
                     )
                   ],
                 )
               ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildWeeklyWeather(){
+
+   //DateTime now = DateTime.now();
+    //String today_date = "${now.month}월 ${now.day}일";
+
+    return Container(
+      margin: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 5.0),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(50.0), color: Color(0xfffff2cc)),
+      padding: EdgeInsets.all(10.0),
+      child: Card(
+        color: Color(0xfffff2cc),
+        elevation: 0.0,
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(left: 40.0, right: 40.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(child: AutoSizeText("Weekly WEATER", style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),  maxLines: 1, overflow: TextOverflow.ellipsis)
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10.0,),
+            Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child:SingleChildScrollView(scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _buildWeeklyWeatherItem("토", 0, 6),
+                  _buildWeeklyWeatherItem("일", 0, 9),
+                  _buildWeeklyWeatherItem("월", 0, 12),
+                  _buildWeeklyWeatherItem("화", 0, 15),
+                  _buildWeeklyWeatherItem("수", 0, 15),
+                  _buildWeeklyWeatherItem("목", 0, 15),
+                  _buildWeeklyWeatherItem("금", 0, 15),
+                ],
+              ),
+              ),
             )
           ],
         ),
@@ -119,13 +167,15 @@ class HomeScreenState extends State<HomeScreen>{
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Weekly WEATER", style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold) ,),
+                  Expanded(child: AutoSizeText(today_date+"WEATER", style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),  maxLines: 1, overflow: TextOverflow.ellipsis)
+                  ),
                 ],
               ),
             ),
             SizedBox(height: 10.0,),
             Padding(
               padding: EdgeInsets.only(right: 10.0),
+              child: SingleChildScrollView(scrollDirection: Axis.horizontal,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -133,51 +183,12 @@ class HomeScreenState extends State<HomeScreen>{
                   _buildTodaysWeatherItem(9, 0, 9),
                   _buildTodaysWeatherItem(8, 0, 12),
                   _buildTodaysWeatherItem(4, 0, 15),
+                  _buildTodaysWeatherItem(8, 0, 18),
+                  _buildTodaysWeatherItem(9, 0, 21),
+                  _buildTodaysWeatherItem(8, 0, 0),
+                  _buildTodaysWeatherItem(4, 0, 3),
                 ],
               ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  _buildWeeklyWeather(){
-
-    DateTime now = DateTime.now();
-    String today_date = "${now.month}월 ${now.day}일";
-
-    return Container(
-      margin: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0, bottom: 5.0),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(50.0), color: Color(0xfffff2cc)),
-      padding: EdgeInsets.all(10.0),
-      child: Card(
-        color: Color(0xfffff2cc),
-        elevation: 0.0,
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(left: 40.0, right: 40.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(today_date, style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold) ,),
-                  Text("WEATER", style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold) ,),
-                ],
-              ),
-            ),
-            SizedBox(height: 10.0,),
-            Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _buildWeeklyWeatherItem("토", 0, 6),
-                  _buildWeeklyWeatherItem("일", 0, 9),
-                  _buildWeeklyWeatherItem("월", 0, 12),
-                  _buildWeeklyWeatherItem("화", 0, 15),
-                  _buildWeeklyWeatherItem("수", 0, 15),
-                ],
               ),
             )
           ],
